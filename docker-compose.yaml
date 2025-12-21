@@ -53,59 +53,59 @@ services:
     networks:
       - local-data-lakehouse-iceberg
 
-  # # Distributed Compute Engine: Apache Spark
-  # spark-master:
-  #   platform: linux/amd64
-  #   image: spark-image
-  #   build:
-  #     context: .
-  #     dockerfile: ./infrastructure/spark/Dockerfile
-  #   container_name: spark-master
-  #   ports:
-  #     - "8080:8080"
-  #     - "4040:4040"
-  #     - "7077:7077"
-  #   env_file:
-  #     - .env
-  #     - ./infrastructure/spark/.env.spark
-  #   volumes:
-  #     - ./infrastructure/common:/tmp/common
-  #     - ./infrastructure/spark/conf:/tmp/conf
-  #     - ./pipelines:/opt/spark/apps
-  #     - ./infrastructure/spark/logs/:/opt/spark/spark-events
-  #   depends_on:
-  #     gravitino:
-  #       condition: service_healthy
-  #     minio:
-  #       condition: service_healthy
-  #   entrypoint: ["./init/init.sh", "master"]
-  #   healthcheck:
-  #     test: [ "CMD", "curl", "-f", "http://localhost:8080" ]
-  #     interval: 5s
-  #     timeout: 60s
-  #     retries: 5
-  #     start_period: 20s
-  #   networks:
-  #     - local-data-lakehouse-iceberg
+  # Distributed Compute Engine: Apache Spark
+  spark-master:
+    platform: linux/amd64
+    image: spark-image
+    build:
+      context: .
+      dockerfile: ./infrastructure/spark/Dockerfile
+    container_name: spark-master
+    ports:
+      - "8080:8080"
+      - "4040:4040"
+      - "7077:7077"
+    env_file:
+      - .env
+      - ./infrastructure/spark/.env.spark
+    volumes:
+      - ./infrastructure/common:/tmp/common
+      - ./infrastructure/spark/conf:/tmp/conf
+      - ./pipelines:/opt/spark/apps
+      - ./infrastructure/spark/logs/:/opt/spark/spark-events
+    depends_on:
+      gravitino:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    entrypoint: ["./init/init.sh", "master"]
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080" ]
+      interval: 5s
+      timeout: 60s
+      retries: 5
+      start_period: 20s
+    networks:
+      - local-data-lakehouse-iceberg
 
-  # spark-worker:
-  #   platform: linux/amd64
-  #   image: spark-image
-  #   container_name: spark-worker
-  #   env_file:
-  #     - .env
-  #     - ./infrastructure/spark/.env.spark
-  #   volumes:
-  #     - ./infrastructure/common:/tmp/common
-  #     - ./infrastructure/spark/conf:/tmp/conf
-  #     - ./pipelines:/opt/spark/apps
-  #     - ./infrastructure/spark/logs/:/opt/spark/spark-events
-  #   depends_on:
-  #     spark-master:
-  #       condition: service_healthy
-  #   entrypoint: ['./init/init.sh', 'worker']
-  #   networks:
-  #     - local-data-lakehouse-iceberg
+  spark-worker:
+    platform: linux/amd64
+    image: spark-image
+    container_name: spark-worker
+    env_file:
+      - .env
+      - ./infrastructure/spark/.env.spark
+    volumes:
+      - ./infrastructure/common:/tmp/common
+      - ./infrastructure/spark/conf:/tmp/conf
+      - ./pipelines:/opt/spark/apps
+      - ./infrastructure/spark/logs/:/opt/spark/spark-events
+    depends_on:
+      spark-master:
+        condition: service_healthy
+    entrypoint: ['./init/init.sh', 'worker']
+    networks:
+      - local-data-lakehouse-iceberg
 
 
   # Object Storage: MinIO
