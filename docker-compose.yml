@@ -151,6 +151,30 @@ services:
       "
     networks:
       - local-data-lakehouse-iceberg
+    
+  trino:
+    platform: linux/amd64
+    image: trinodb/trino:${TRINO_IMAGE_TAG}
+    container_name: trino
+    ports:
+      - "8088:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./infrastructure/trino/etc/catalog:/etc/trino/catalog
+    depends_on:
+      gravitino:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8088/v1/info" ]
+      interval: 5s
+      timeout: 60s
+      retries: 5
+      start_period: 20s
+    networks:
+      - local-data-lakehouse-iceberg
 
 networks:
   local-data-lakehouse-iceberg:

@@ -1,2 +1,4 @@
-infrastructure/**/volumes
-infrastructure/spark/**/logs
+infrastructure/minio/volumes
+infrastructure/postgres/volumes
+infrastructure/gravitino/volumes
+infrastructure/spark/logs
