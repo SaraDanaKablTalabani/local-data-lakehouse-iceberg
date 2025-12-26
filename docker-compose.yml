@@ -4,6 +4,10 @@ services:
     build:
       context: .
       dockerfile: ./infrastructure/gravitino/Dockerfile
+      args:
+        - GRAVITINO_IMAGE_TAG=${GRAVITINO_IMAGE_TAG}
+        - HADOOP_AWS_JAR_VERSION=${HADOOP_AWS_JAR_VERSION}
+        - AWS_JAVA_SDK_BUNDLE_JAR_VERSION=${AWS_JAVA_SDK_BUNDLE_JAR_VERSION}
     container_name: gravitino
     ports:
       - "8090:8090"
@@ -60,6 +64,14 @@ services:
     build:
       context: .
       dockerfile: ./infrastructure/spark/Dockerfile
+      args:
+        - PYTHON_VERSION=${PYTHON_VERSION}
+        - SPARK_SCALA_VERSION=${SPARK_SCALA_VERSION}
+        - ICEBERG_VERSION=${ICEBERG_VERSION}
+        - SPARK_VERSION=${SPARK_VERSION}
+        - POSTGRESQL_JAR_VERSION=${POSTGRESQL_JAR_VERSION}
+        - HADOOP_AWS_JAR_VERSION=${HADOOP_AWS_JAR_VERSION}
+        - AWS_JAVA_SDK_BUNDLE_JAR_VERSION=${AWS_JAVA_SDK_BUNDLE_JAR_VERSION}
     container_name: spark-master
     ports:
       - "8080:8080"
@@ -71,7 +83,8 @@ services:
     volumes:
       - ./infrastructure/common:/tmp/common
       - ./infrastructure/spark/conf:/tmp/conf
-      - ./pipelines:/opt/spark/apps
+      - ./pipelines:/opt/spark/apps/pipelines
+      - ./setup:/opt/spark/apps/setup
       - ./infrastructure/spark/logs/:/opt/spark/spark-events
     depends_on:
       gravitino:
@@ -106,7 +119,6 @@ services:
     entrypoint: ['./init/init.sh', 'worker']
     networks:
       - local-data-lakehouse-iceberg
-
 
   # Object Storage: MinIO
   minio:

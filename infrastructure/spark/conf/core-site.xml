@@ -21,11 +21,11 @@
 
   <property>
     <name>fs.s3a.path.style.access</name>
-    <value>true</value> <!-- MinIO requires path-style -->
+    <value>true</value>
   </property>
 
   <property>
     <name>fs.s3a.connection.ssl.enabled</name>
-    <value>false</value> <!-- if MinIO not using TLS -->
+    <value>false</value>
   </property>
 </configuration>

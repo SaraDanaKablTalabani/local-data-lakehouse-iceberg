@@ -1,5 +1,6 @@
 # Install Image with Python Version 3.10.11
-FROM python:3.10.11-bullseye AS spark-base
+ARG PYTHON_VERSION
+FROM python:${PYTHON_VERSION}-bullseye AS spark-base
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -20,7 +21,7 @@ FROM spark-base AS spark
 # =======================================================================
 # Create folder for the Hadoop and Spark folders
 # =======================================================================
-ARG SPARK_VERSION=3.5.0
+ARG SPARK_VERSION
 # RUN echo $SPARK_VERSION
 ENV SPARK_HOME="/root/spark"
 RUN mkdir -p ${SPARK_HOME}
@@ -32,6 +33,13 @@ WORKDIR ${SPARK_HOME}
 RUN curl https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop3.tgz -o ${SPARK_HOME}/spark-${SPARK_VERSION}-bin-hadoop3.tgz \
     && tar xvzf ${SPARK_HOME}/spark-${SPARK_VERSION}-bin-hadoop3.tgz --directory ${SPARK_HOME} --strip-components 1 \
     && rm -rf ${SPARK_HOME}/spark-${SPARK_VERSION}-bin-hadoop3.tgz
+
+
+ARG SPARK_SCALA_VERSION
+ARG ICEBERG_VERSION
+ARG POSTGRESQL_JAR_VERSION
+ARG HADOOP_AWS_JAR_VERSION
+ARG AWS_JAVA_SDK_BUNDLE_JAR_VERSION
 
 FROM spark AS spark-deps
 # =======================================================================
@@ -51,6 +59,13 @@ RUN ./init/dependency.sh
 # =======================================================================
 # Install Python Libraries 
 # =======================================================================
+ARG SPARK_VERSION
+ARG SCALA_VERSION
+ARG ICEBERG_VERSION
+ARG POSTGRESQL_JAR_VERSION
+ARG HADOOP_AWS_JAR_VERSION
+ARG AWS_JAVA_SDK_BUNDLE_JAR_VERSION
+
 FROM spark-deps AS spark-python
 # Install python dependencies
 COPY ./infrastructure/spark/requirements.txt .
