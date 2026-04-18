@@ -86,6 +86,7 @@ services:
       - ./pipelines:/opt/spark/apps/pipelines
       - ./setup:/opt/spark/apps/setup
       - ./infrastructure/spark/logs/:/opt/spark/spark-events
+      - ./assets:/opt/spark/apps/assets
     depends_on:
       gravitino:
         condition: service_healthy
@@ -113,6 +114,7 @@ services:
       - ./infrastructure/spark/conf:/tmp/conf
       - ./pipelines:/opt/spark/apps
       - ./infrastructure/spark/logs/:/opt/spark/spark-events
+      - ./assets:/opt/spark/apps/assets
     depends_on:
       spark-master:
         condition: service_healthy
