@@ -38,7 +38,7 @@ This setup guide assumes you have Docker.
 
 1. **Clone the repository**
    ```shell
-   git clone https://github.com/marcellinus-witarsah/local-data-lakehouse-iceberg.git
+   git clone [https://github.com/marcellinus-witarsah/local-data-lakehouse-iceberg.git](https://github.com/SaraDanaKablTalabani/local-data-lakehouse-iceberg.git)
    cd local-data-lakehouse-iceberg
    ```
 
