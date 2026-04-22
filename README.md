@@ -63,28 +63,20 @@ To see the table that you just create, you can go inside either the Trino CLI or
 ```shell
 docker exec -it spark-master spark-sql
 select * from catalog_iceberg.schema_iceberg.table_iceberg;
-```
 SELECT * FROM catalog_iceberg.schema_iceberg.cars_detailed LIMIT 5; 
  
 SELECT * FROM catalog_iceberg.schema_iceberg.cars_summary; 
- 
-
- 
 ```
-
-
-
 
 
 or
 ```shell
 docker exec -it trino trino
 select * from catalog_iceberg.schema_iceberg.table_iceberg;
-```
 
 SELECT * FROM catalog_iceberg.schema_iceberg.cars_detailed; 
  
 SELECT * FROM catalog_iceberg.schema_iceberg.cars_summary; 
- 
+``` 
 
  
